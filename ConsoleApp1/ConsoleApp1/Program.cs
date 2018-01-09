@@ -10,17 +10,16 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Console.Clear();
-            Console.WriteLine("---------------------------------------------------------------------");
-            Console.WriteLine("************************| MISSÃO MARTE |*****************************");
-            Console.WriteLine("---------------------------------------------------------------------");
-            Console.WriteLine("********************| CONTROLE DAS SONDAS |**************************");
-            Console.WriteLine("---------------------------------------------------------------------");
-
-
             int opcao;
             do
             {
+                Console.Clear();
+                Console.WriteLine("---------------------------------------------------------------------");
+                Console.WriteLine("************************| MISSÃO MARTE |*****************************");
+                Console.WriteLine("---------------------------------------------------------------------");
+                Console.WriteLine("********************| CONTROLE DAS SONDAS |**************************");
+                Console.WriteLine("---------------------------------------------------------------------");
+
                 Console.WriteLine("ESCOLHA UMA OPÇÃO");
                 Console.WriteLine("[ 1 ] Posicionar Sonda Mars1");
                 Console.WriteLine("[ 2 ] Posicionar Sonda Mars2");
@@ -39,7 +38,7 @@ namespace ConsoleApp1
                         posicionarSondaMars2();
                         break;
                     case 9:
-                        
+                        Help();
                         break;
                     default:
 
@@ -50,10 +49,10 @@ namespace ConsoleApp1
             }
             while (opcao != 0);
         }
+
         private static void posicionarSondaMars1()
         {
             SondaMars1 sonda = new SondaMars1();
-            sonda.Malha = new MalhaVO();
             DefinirMalha(sonda);
             DefinirPosicaoInicialSonda(sonda);
             MovimentarSonda(sonda);
@@ -65,7 +64,6 @@ namespace ConsoleApp1
         private static void posicionarSondaMars2()
         {
             SondaMars2 sonda = new SondaMars2();
-            sonda.Malha = new MalhaVO();
             DefinirMalha(sonda);
             DefinirPosicaoInicialSonda(sonda);
             MovimentarSonda(sonda);
@@ -79,92 +77,8 @@ namespace ConsoleApp1
             Console.WriteLine(String.Concat("Informe deslocamento da Sonda ", sonda.GetNome(), ": "));
             char[] arr;
             arr = Console.ReadLine().ToUpper().ToCharArray();
-            foreach (char movimento in arr)
-            {
-                switch (movimento)
-                {
-                    case 'M':
-                        MoverSonda(sonda);
-                        break;
-
-                    default:
-                        GirarSonda(sonda, movimento);
-                        break;
-                }
-            }
-        }
-        private static void GirarSonda(SondaVO sonda, char direcaogiro)
-        {
-            switch (direcaogiro)
-            {
-                case 'L':
-                    GirarEsquerda(sonda);
-                    break;
-                case 'R':
-                    GirarDireita(sonda);
-                    break;
-                default:
-                    Console.WriteLine("Direção Incorreta");
-                    break;
-            }
-        }
-
-        private static void GirarEsquerda(SondaVO sonda)
-        {
-            switch (sonda.Direcao)
-            {
-                case eDirecao.Norte:
-                    sonda.Direcao = eDirecao.Oeste;
-                    break;
-                case eDirecao.Oeste:
-                    sonda.Direcao = eDirecao.Sul;
-                    break;
-                case eDirecao.Sul:
-                    sonda.Direcao = eDirecao.Leste;
-                    break;
-                case eDirecao.Leste:
-                    sonda.Direcao = eDirecao.Norte;
-                    break;
-            }
-        }
-
-        private static void GirarDireita(SondaVO sonda)
-        {
-            switch (sonda.Direcao)
-            {
-                case eDirecao.Norte:
-                    sonda.Direcao = eDirecao.Leste;
-                    break;
-                case eDirecao.Leste:
-                    sonda.Direcao = eDirecao.Sul;
-                    break;
-                case eDirecao.Sul:
-                    sonda.Direcao = eDirecao.Oeste;
-                    break;
-                case eDirecao.Oeste:
-                    sonda.Direcao = eDirecao.Norte;
-                    break;
-            }
-        }
-
-        private static void MoverSonda(SondaVO sonda)
-        {
-            switch (sonda.Direcao)
-            {
-                case eDirecao.Norte:
-                    sonda.SetLongitude(sonda.Longitude+ 1);
-                    break;
-                case eDirecao.Oeste:
-                    sonda.SetLatitude(sonda.Latitude- 1);
-                    break;
-                case eDirecao.Sul:
-                    sonda.SetLongitude(sonda.Longitude- 1);
-                    break;
-                case eDirecao.Leste:
-                    sonda.SetLatitude(sonda.Latitude+ 1);
-                    break;
-            }
-        }
+            ControlarSonda.MovimentarSonda(sonda, arr);
+        }   
 
         private static void DefinirMalha(SondaVO sonda)
         {
@@ -180,28 +94,19 @@ namespace ConsoleApp1
             Console.Write(String.Concat("Informe a posição inicial da Sonda ", sonda.GetNome(), ": "));
             char[] arr;
             arr = Console.ReadLine().ToUpper().ToCharArray();
-            sonda.SetLatitude(Int32.Parse(arr[0].ToString()));
-            sonda.SetLongitude(Int32.Parse(arr[1].ToString()));
+            ControlarSonda.SetPosicaoInicialSonda(sonda, Int32.Parse(arr[0].ToString()), Int32.Parse(arr[1].ToString()), arr[2]);
+        }
 
-            switch (arr[2])
-            {
-                case 'N':
-                    sonda.Direcao = eDirecao.Norte;
-                    break;
+        private static void Help()
+        {
+            Console.Clear();
+            Console.WriteLine("Para controlar as sondas, utilise as seguintes letras:");
+            Console.WriteLine("L: Para girar a sonda para a Esquerda.");
+            Console.WriteLine("R: Para girar a sonda para a Direita.");
+            Console.WriteLine("M: Para mover a sonda para o quadrante a frente.");
 
-                case 'E':
-                    sonda.Direcao = eDirecao.Leste;
-                    break;
 
-                case 'S':
-                    sonda.Direcao = eDirecao.Sul;
-                    break;
-
-                case 'W':
-                    sonda.Direcao = eDirecao.Oeste;
-                    break;
-            }
-}
+        }
 
     }
 

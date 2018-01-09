@@ -14,7 +14,7 @@ namespace ConsoleApp1
         Sul = 'S',
         Oeste = 'W'
     }
-    class SondaVO
+    public class SondaVO
     {
         private string nome;
         private int latitude;
@@ -33,6 +33,11 @@ namespace ConsoleApp1
             else
               latitude = value;
         }
+
+        public SondaVO() {
+            this.Malha = new MalhaVO();
+        }
+        
 
         public int Longitude => longitude;
 
