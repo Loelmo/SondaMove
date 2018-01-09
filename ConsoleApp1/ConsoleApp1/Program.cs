@@ -93,7 +93,7 @@ namespace ConsoleApp1
         {
             Console.Write(String.Concat("Informe a posição inicial da Sonda ", sonda.GetNome(), ": "));
             char[] arr;
-            arr = Console.ReadLine().ToUpper().ToCharArray();
+            arr = Console.ReadLine().Replace(" ","").ToUpper().ToCharArray();
             ControlarSonda.SetPosicaoInicialSonda(sonda, Int32.Parse(arr[0].ToString()), Int32.Parse(arr[1].ToString()), arr[2]);
         }
 
